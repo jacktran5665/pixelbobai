@@ -146,8 +146,7 @@
             addMessage('bot', '', true); // Add typing animation
             try {
                 // Use local endpoint if running locally, Netlify function if deployed
-                const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-                const endpoint = isLocal ? '/send_message' : '/.netlify/functions/send_message';
+                const endpoint = '/send_message';
                 const res = await fetch(endpoint, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
@@ -179,3 +178,4 @@
     </script>
 </body>
 </html>
+
