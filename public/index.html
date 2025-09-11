@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PixelBob</title>
+    <link rel="stylesheet" href="/pixel.css">
+</head>
+<body>
+    <canvas id="starfield" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none;"></canvas>
+    <div id="sparkle-container" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:1;pointer-events:none;"></div>
+    <!-- Pixel startup overlay -->
+    <div id="pixel-startup" style="position:fixed;top:0;left:0;width:100vw;height:100vh;background:#111;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity 0.8s;">
+        <div style="font-family:'Press Start 2P',monospace;font-size:2.2em;color:#fffa00;text-shadow:2px 2px 0 #fff,4px 4px 0 #222;letter-spacing:2px;">BOB</div>
+        <div style="margin-top:18px;font-family:'Press Start 2P',monospace;font-size:1em;color:#fff;text-shadow:1px 1px 0 #00ffe7;">Pixel Chatbot Loading...</div>
+        <div style="margin-top:32px;display:flex;gap:8px;">
+            <div class="pixel-sparkle" style="background:#fffa00;width:12px;height:12px;animation:sparkle 1.2s infinite;"></div>
+            <div class="pixel-sparkle" style="background:#00ffe7;width:12px;height:12px;animation:sparkle 1.2s 0.3s infinite;"></div>
+            <div class="pixel-sparkle" style="background:#ff00a2;width:12px;height:12px;animation:sparkle 1.2s 0.6s infinite;"></div>
+        </div>
+    </div>
+    <div class="pixel-chatbot-container" id="main-container">
+        <div class="pixel-chatbot-header">
+            <span class="pixel-avatar bot"></span>
+            PixelBob <span style="font-size:0.7em;color:#00ffe7;vertical-align:middle;">● (˶˃ ᵕ ˂˶)</span>
+        </div>
+        <div class="pixel-chatbox" id="chat-box"></div>
+        <form id="chat-form" autocomplete="off" class="pixel-chatbot-input">
+            <input type="text" id="user-input" placeholder="Type your message..." required>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+    <script>
+        // Cool startup animation (no loading overlay)
+        window.addEventListener('DOMContentLoaded', () => {
+            // Pixel startup animation
+            const startup = document.getElementById('pixel-startup');
+            setTimeout(() => {
+                startup.style.opacity = 0;
+                setTimeout(() => startup.style.display = 'none', 900);
+            }, 1500);
+
+            const container = document.getElementById('main-container');
+            container.classList.add('pixel-animate-in');
+            setTimeout(() => {
+                container.classList.remove('pixel-animate-in');
+            }, 1200);
+            // Add bot introduction message
+            addMessage('bot', "Hiii! I'm Bob, your pixel chatbot. How can I help you today??");
+
+            const canvas = document.getElementById('starfield');
+            const ctx = canvas.getContext('2d');
+            let w = window.innerWidth;
+            let h = window.innerHeight;
+            function resizeStarfield() {
+                w = window.innerWidth;
+                h = window.innerHeight;
+                canvas.width = w;
+                canvas.height = h;
+            }
+            resizeStarfield();
+            window.addEventListener('resize', resizeStarfield);
+            // Star properties
+            const STAR_COUNT = 120;
+            const stars = [];
+            for (let i = 0; i < STAR_COUNT; i++) {
+                stars.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    r: Math.random() * 1.2 + 0.6,
+                    twinkle: Math.random() * Math.PI * 2,
+                    speed: Math.random() * 0.2 + 0.05
+                });
+            }
+            function drawStars() {
+                ctx.clearRect(0, 0, w, h);
+                for (const star of stars) {
+                    const tw = 0.5 + 0.5 * Math.sin(Date.now() * 0.002 * star.speed + star.twinkle);
+                    ctx.save();
+                    ctx.globalAlpha = 0.7 * tw;
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.r * (1.1 + 0.3 * tw), 0, 2 * Math.PI);
+                    ctx.fillStyle = '#fff';
+                    ctx.shadowColor = '#fff';
+                    ctx.shadowBlur = 8 * tw;
+                    ctx.fill();
+                    ctx.restore();
+                }
+            }
+            function animateStars() {
+                drawStars();
+                requestAnimationFrame(animateStars);
+            }
+            animateStars();
+
+            // Pixel sparkle effect
+            const sparkleColors = ['#fff', '#fffa00', '#00ffe7', '#ff00a2'];
+            function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+            function createSparkle() {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'pixel-sparkle';
+                sparkle.style.left = randomInt(0, 98) + '%';
+                sparkle.style.top = randomInt(0, 98) + '%';
+                sparkle.style.background = sparkleColors[randomInt(0, sparkleColors.length-1)];
+                sparkle.style.animationDuration = (0.8 + Math.random()*1.2) + 's';
+                document.getElementById('sparkle-container').appendChild(sparkle);
+                setTimeout(() => sparkle.remove(), 1400);
+            }
+            setInterval(createSparkle, 300);
+    });
+
+        const chatBox = document.getElementById('chat-box');
+        const chatForm = document.getElementById('chat-form');
+        const userInput = document.getElementById('user-input');
+
+        function addMessage(role, text, isTyping=false) {
+            const msg = document.createElement('div');
+            msg.className = 'pixel-message ' + (role === 'user' ? 'user' : 'bot');
+            // Add avatar
+            const avatar = document.createElement('span');
+            avatar.className = 'pixel-avatar ' + (role === 'user' ? 'user' : 'bot');
+            msg.appendChild(avatar);
+            // Add bubble or typing
+            if (isTyping) {
+                const bubble = document.createElement('span');
+                bubble.className = 'pixel-bubble';
+                bubble.innerHTML = '<span class="pixel-typing-dot"></span><span class="pixel-typing-dot"></span><span class="pixel-typing-dot"></span>';
+                msg.appendChild(bubble);
+            } else {
+                const bubble = document.createElement('span');
+                bubble.className = 'pixel-bubble';
+                bubble.textContent = text;
+                msg.appendChild(bubble);
+                // Add animation for sent messages
+                msg.classList.add('sent-anim');
+                setTimeout(() => msg.classList.remove('sent-anim'), 600);
+            }
+            chatBox.appendChild(msg);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        chatForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const message = userInput.value;
+            addMessage('user', message);
+            userInput.value = '';
+            addMessage('bot', '', true); // Add typing animation
+            try {
+                const res = await fetch('/.netlify/functions/send_message', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({message})
+                });
+                
+                // Check if response is ok
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                
+                // Check if response is JSON
+                const contentType = res.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    const text = await res.text();
+                    console.error('Non-JSON response:', text);
+                    throw new Error('Server returned non-JSON response');
+                }
+                
+                const data = await res.json();
+                // Replace typing with bot reply
+                const lastMsg = chatBox.lastChild;
+                lastMsg.querySelector('.pixel-bubble').innerHTML = '';
+                lastMsg.querySelector('.pixel-bubble').textContent = data.reply || data.error;
+                lastMsg.classList.add('sent-anim');
+                setTimeout(() => lastMsg.classList.remove('sent-anim'), 600);
+            } catch (err) {
+                console.error('Error:', err);
+                const lastMsg = chatBox.lastChild;
+                lastMsg.querySelector('.pixel-bubble').innerHTML = '';
+                lastMsg.querySelector('.pixel-bubble').textContent = 'Error: ' + err.message;
+                lastMsg.classList.add('sent-anim');
+                setTimeout(() => lastMsg.classList.remove('sent-anim'), 600);
+            }
+        };
+    </script>
+</body>
+</html>

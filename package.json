@@ -1,0 +1,10 @@
+{
+  "name": "pixelbot",
+  "version": "1.0.0",
+  "description": "PixelBob Chatbot",
+  "main": "public/index.html",
+  "scripts": {
+    "build": "echo 'No build step required'"
+  }
+}
+

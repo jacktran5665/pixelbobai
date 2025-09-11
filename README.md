@@ -1,0 +1,1 @@
+Built a pixel inspired style chatbot that detects user emotions using NLP to replies empathetically. Developed skills in natural language processing, sentiment analysis, empathetic design, and human-centered AI.

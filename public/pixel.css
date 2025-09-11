@@ -1,0 +1,290 @@
+/* Custom text selection: white background, black text */
+::selection {
+    background: #fff;
+    color: #111;
+}
+::-moz-selection {
+    background: #fff;
+    color: #111;
+}
+/* Pixel-style custom scrollbar */
+::-webkit-scrollbar {
+    width: 12px;
+    background: #000;
+}
+::-webkit-scrollbar-thumb {
+    background: #fff;
+    border: 2px solid #111;
+    border-radius: 0;
+    box-shadow: 1px 1px 0 #fffa00;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #fffa00;
+    box-shadow: 1px 1px 0 #00ffe7;
+}
+::-webkit-scrollbar-corner {
+    background: #000;
+}
+/* PIXEL CHATBOT - MODERN COOL DESIGN */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+    background: #111;
+    color: #fff;
+    font-family: 'Press Start 2P', monospace, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    image-rendering: pixelated;
+    font-size: 12px;
+}
+
+.pixel-chatbot-container {
+    max-width: 540px;
+    margin: 48px auto 0 auto;
+    background: #111;
+    border: 4px solid #111;
+    box-shadow: 0 0 0 4px #111, 0 0 0 8px #fff;
+    border-radius: 0;
+    padding: 0;
+    position: relative;
+    z-index: 2;
+    animation: pixel-glow 2s infinite alternate;
+}
+@keyframes pixel-glow {
+    0% { box-shadow: 0 0 0 8px #111, 0 0 0 16px #fff; }
+    100% { box-shadow: 0 0 16px 8px #fff, 0 0 0 16px #fff; }
+}
+
+.pixel-chatbot-header {
+    background: #111;
+    border-bottom: 2px solid #fff;
+    padding: 8px 0 6px 0;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #fffa00;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 0 #fff, 2px 2px 0 #222;
+    position: relative;
+}
+
+/* Pixel avatars */
+.pixel-avatar {
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    margin-right: 6px;
+    vertical-align: middle;
+    background: #fff;
+    border: 1.5px solid #fffa00;
+    box-shadow: 1.5px 1.5px 0 #00ffe7;
+    image-rendering: pixelated;
+}
+.pixel-avatar.bot {
+    background: #111;
+    border-color: #00ffe7;
+    box-shadow: 1.5px 1.5px 0 #fffa00;
+}
+
+.pixel-chatbox {
+    background: #111;
+    border: 2px solid #332525;
+    border-radius: 0;
+    margin: 0 16px 0 16px;
+    min-height: 320px;
+    max-height: 480px;
+    overflow-y: auto;
+    padding: 18px 10px 10px 10px;
+    box-shadow: 0 0 0 2px #00ffe7 inset;
+    font-size: 0.95em;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    z-index: 2;
+}
+
+.pixel-message {
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+    margin-bottom: 1px;
+    max-width: 90%;
+    word-break: break-word;
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.3s, transform 0.3s;
+    font-family: 'Press Start 2P', monospace;
+    image-rendering: pixelated;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    font-size: 0.9em;
+}
+
+/* Pixel pop-up animation for new messages */
+.pixel-message.sent-anim {
+    animation: pixel-pop-in 0.38s cubic-bezier(.68,-0.55,.27,1.55);
+}
+@keyframes pixel-pop-in {
+    0% {
+        opacity: 0;
+        transform: scale(0.7) translateY(24px);
+        filter: blur(2px) brightness(1.5);
+    }
+    60% {
+        opacity: 1;
+        transform: scale(1.08) translateY(-4px);
+        filter: blur(0.5px) brightness(1.1);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: none;
+    }
+}
+.pixel-message.user {
+    flex-direction: row-reverse;
+    align-self: flex-end;
+}
+.pixel-message.bot {
+    align-self: flex-start;
+}
+.pixel-bubble {
+    padding: 6px 16px;
+    border-radius: 0;
+    border: 1.5px solid #fff;
+    background: #fffa00;
+    color: #111;
+    box-shadow: 1.5px 1.5px 0 #00ffe7;
+    font-size: 0.95em;
+    min-width: 24px;
+    max-width: 340px;
+    position: relative;
+    z-index: 2;
+}
+.pixel-message.bot .pixel-bubble {
+    background: #00ffe7;
+    color: #111;
+    border-color: #fff;
+    box-shadow: 1.5px 1.5px 0 #ff00a2;
+}
+
+/* Pixel bubble tail */
+.pixel-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 8px;
+    width: 6px;
+    height: 6px;
+    background: inherit;
+    border-left: 1.5px solid #fff;
+    border-bottom: 1.5px solid #fff;
+    transform: rotate(45deg);
+    z-index: 1;
+}
+.pixel-message.user .pixel-bubble::after {
+    left: auto;
+    right: 8px;
+    border-left: none;
+    border-right: 1.5px solid #fff;
+    border-bottom: 1.5px solid #fff;
+    background: #fffa00;
+}
+.pixel-message.bot .pixel-bubble::after {
+    background: #00ffe7;
+}
+
+/* Typing animation */
+.pixel-typing {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-left: 38px;
+    margin-bottom: 8px;
+}
+.pixel-typing-dot {
+    width: 5px;
+    height: 5px;
+    background: #fff;
+    border-radius: 0;
+    margin-right: 1px;
+    animation: pixel-bounce-dot 1.2s infinite;
+    display: inline-block;
+}
+.pixel-typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.pixel-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes pixel-bounce-dot {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* Chat input area */
+.pixel-chatbot-input {
+    display: flex;
+    gap: 4px;
+    padding: 8px 8px 8px 8px;
+    background: #111;
+    border-top: 2px solid #fff;
+    align-items: center;
+}
+.pixel-chatbot-input input[type="text"] {
+    flex: 2 1 0%;
+    width: 100%;
+    min-width: 0;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.9em;
+    padding: 4px 7px;
+    border: 1.5px solid #fff;
+    border-radius: 0;
+    background: #111;
+    color: #fff;
+    outline: none;
+    image-rendering: pixelated;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 1.5px 1.5px 0 #fffa00;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+.pixel-chatbot-input input[type="text"]:focus {
+    border: 1.5px solid #00ffe7;
+    box-shadow: 1.5px 1.5px 0 #00ffe7;
+}
+.pixel-chatbot-input button {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.9em;
+    background: #fffa00;
+    color: #111;
+    border: 1.5px solid #fff;
+    border-radius: 0;
+    padding: 4px 12px;
+    cursor: pointer;
+    box-shadow: 1.5px 1.5px 0 #00ffe7;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.pixel-chatbot-input button:hover {
+    background: #00ffe7;
+    color: #111;
+    box-shadow: 1.5px 1.5px 0 #ff00a2;
+}
+
+/* Pixel sparkle effect */
+.pixel-sparkle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #fff;
+    box-shadow: 0 0 2px 2px #fff, 0 0 8px 2px #fff;
+    opacity: 0.8;
+    animation: sparkle 1.2s infinite;
+    image-rendering: pixelated;
+    z-index: 10;
+}
+@keyframes sparkle {
+    0%, 100% { opacity: 0.8; transform: scale(1) rotate(0deg); }
+    50% { opacity: 0.2; transform: scale(1.6) rotate(90deg); }
+}
